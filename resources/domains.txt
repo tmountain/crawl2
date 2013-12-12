@@ -1,0 +1,5 @@
+google.com
+yahoo.com
+dogpile.com
+altavisa.com
+hotbot.com
