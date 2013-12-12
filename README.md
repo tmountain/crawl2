@@ -8,6 +8,7 @@ Setup your critieria in resources/ and then do lein run.
 
 Crawl table schema is as follows:
 
+```
 CREATE TABLE `crawl` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `domain` varchar(255) DEFAULT NULL,
@@ -16,6 +17,7 @@ CREATE TABLE `crawl` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `domain` (`domain`,`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
 
 ## License
 
