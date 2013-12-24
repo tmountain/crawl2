@@ -21,6 +21,17 @@
      ON DUPLICATE KEY UPDATE
        score = ?" [domain url score score]))
 
+(defn get-domains-to-process
+  []
+  (map :domain (sql/query db ["SELECT domain FROM domain WHERE processed = 0"])))
+
+(defn set-domain-processed
+  [domain]
+  (sql/db-do-prepared db
+    "UPDATE domain
+       SET processed = 1
+     WHERE domain = ?" [domain]))
+
 (defn my-handler [{:keys [url body]}]
   (let [domain (.getHost (url-like url))
         doc-body (normalize-str (html->str body))
