@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# run repeatedly to ensure all domains are processed
+# the crawler leaks memory, so this is necessary :-(
+
+while true
+do
+        killall java
+        lein run
+        killall java
+	sleep 1
+done

@@ -1,0 +1,29 @@
+#!/usr/bin/ruby
+
+keyword_map = {}
+
+fh = File.new('/tmp/keywordScore.csv', 'r')
+while line = fh.gets
+  line.chomp!
+  keyword, weight = line.split(',')
+  keyword_map[keyword] = weight
+end
+fh.close
+
+term_map = {}
+
+while line = $stdin.gets
+  line.chomp!
+  domain, term = line.split(',')
+  term_map[domain] ||= {}
+  term_map[domain][term] ||= 0
+  term_map[domain][term] += 1
+end
+
+term_map.keys.each do |domain|
+  term_map[domain].each do |term, count|
+    count = count > 10 ? 10 : count
+    score = count * keyword_map[term].to_i
+    puts "#{domain},#{term},#{score}"
+  end
+end

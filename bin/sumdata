@@ -1,0 +1,27 @@
+#!/usr/bin/ruby
+
+domains = {}
+
+fh = File.new('/tmp/domain_report.csv')
+
+while line = fh.gets
+  fields = line.split(',')
+  domain, score = line.scan(/^"([^"]+)".*"([^"]+)"/).first
+  domains[domain] ||= 0
+  domains[domain] += score.to_i
+end
+
+fh.close
+fh = File.new('/tmp/domain_report.csv')
+puts "domain,keyword,bias,qualified,weight,count,keyword score,domain score"
+
+while line = fh.gets
+  line.chomp!
+  fields = line.split(',')
+  domain = line.scan(/^"([^"]+)"/).first[0]
+  score = domains[domain]
+  puts line + ',"' + score.to_s + '"'
+end
+
+fh.close
+

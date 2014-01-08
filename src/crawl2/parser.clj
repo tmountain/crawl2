@@ -16,14 +16,12 @@
     (reduce + (flatten matches))))
 
 (defn dump-match-freq [phrase string]
-  (->>
     (map #(clojure.string/split %1 #" ")
-         (re-seq (re-pattern phrase) (lower-case string)))
-    identity))
+         (re-seq (re-pattern phrase) (lower-case string))))
 
-(defn dump-score [terms string]
-  (let [matches (map #(dump-match-freq %1 string) terms)]
-    matches))
+(defn raw-score [terms string]
+    (filter #(not (empty? %1)) 
+        (map #(dump-match-freq %1 string) terms)))
 
 (defn tokenize [string]
   (let [tokens (split string #"\n")]

@@ -3,27 +3,28 @@
   (:require [itsy.core :refer :all]
             [itsy.extract :refer [html->str]]))
 
-(def domain-list (tokenize (get-domains-to-process)))
+(def domain-list (get-domains-to-process))
 
 (def crawl-config
   { :handler my-handler
     :workers 5
-    :url-limit 10
+    :url-limit 100
     :url-extractor extract-all
     :host-limit true
     :polite? false })
 
 (defn crawl-domain [domain config]
-    (let [domain-config (assoc config :url domain)
+    (let [url (str "http://" domain)
+          domain-config (assoc config :url url)
           crawler (crawl domain-config)]
       (set-domain-processed domain)
       (println (str "Finished: " domain)
       (stop-workers crawler))))
 
 (defn crawl-bucket [bucket]
-  (doall (map #(crawl-domain (str "http://" %1) crawl-config) bucket)))
+  (doall (map #(crawl-domain %1 crawl-config) bucket)))
 
-(def num-agents 1)
+(def num-agents 16)
 
 (def work-buckets (partition-all (int (/ (count domain-list)
                                        num-agents)) domain-list))

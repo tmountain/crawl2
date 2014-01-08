@@ -1,0 +1,15 @@
+#!/usr/bin/ruby
+
+domain_scores = {}
+
+while line = $stdin.gets
+  line.chomp!
+  domain, term, score = line.split(',')
+  score = score.to_i
+  domain_scores[domain] ||= 0
+  domain_scores[domain] += score
+end
+
+domain_scores.keys.each do |domain|
+  puts "#{domain},#{domain_scores[domain]}"
+end
