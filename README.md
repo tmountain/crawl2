@@ -80,7 +80,7 @@ LINES TERMINATED BY '\n';
 SELECT
   keyword, weight
 FROM
-  keyword 
+  keyword
 INTO OUTFILE
   '/tmp/keywordScore.csv'
 FIELDS TERMINATED BY
@@ -96,7 +96,7 @@ LOAD DATA LOCAL INFILE
 INTO TABLE
   domainScores
 FIELDS TERMINATED BY
-  ',' 
+  ','
 LINES TERMINATED BY
   '\n' (domain, score);
 
@@ -118,6 +118,7 @@ Reinitialize as follows:
 
 ```
 UPDATE domain set processed = 0;
+DELETE FROM domainScores;
 DELETE FROM matches;
 DELETE FROM crawl;
 ```
