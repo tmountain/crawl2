@@ -57,7 +57,7 @@ Load data as follows:
 
 ```
 LOAD DATA LOCAL INFILE
-'/tmp/keywords.txt'
+  '/tmp/keywords.txt'
 INTO TABLE
   keyword
 FIELDS TERMINATED BY ','
@@ -112,44 +112,6 @@ FIELDS TERMINATED BY
   ','
 LINES TERMINATED BY
   '\n';
-```
-
-Report data as follows (deprecated):
-
-```
-CREATE TEMPORARY TABLE IF NOT EXISTS tmpScores
-(SELECT
-  d.domain,
-  term,
-  type,
-  qualified,
-  weight,
-  (IF (count(*) < 10, COUNT(*), 10)) cnt,
-  ((IF (COUNT(*) < 10, COUNT(*), 10)) * weight) AS score
-FROM matches m
-JOIN keyword k ON m.term = k.keyword
-JOIN domain d ON m.domain = d.domain
-GROUP BY domain, term);
-
-SELECT *
-FROM tmpScores
-INTO OUTFILE '/tmp/domain_report.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"';
-
-SELECT
-  domain,
-  term,
-  type,
-  weight,
-  (IF (count(*) < 10, COUNT(*), 10)) cnt,
-  ((IF (COUNT(*) < 10, COUNT(*), 10)) * weight) AS score
-FROM matches m
-JOIN keyword k ON m.term = k.keyword
-GROUP BY domain, term
-INTO OUTFILE '/tmp/domain_report.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"';
 ```
 
 Reinitialize as follows:
